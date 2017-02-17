@@ -8,17 +8,18 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     var badTags = new List<string>() { "water" };
     bool goodImage = true;
-    
+
 
     string jsonContent = await req.Content.ReadAsStringAsync();
     dynamic data = JsonConvert.DeserializeObject(jsonContent);
 
-    foreach(var category in data["tags"])
+    foreach (var category in data["tags"])
     {
-        if(badTags.Contains((string)category["name"])) {
+        if (badTags.Contains((string)category["name"]))
+        {
             goodImage = false;
         }
     }
 
-    return req.CreateResponse(HttpStatusCode.OK, goodImage.ToString());
+    return req.CreateResponse(HttpStatusCode.OK, goodImage ? 0.25 : 0.95);
 }
